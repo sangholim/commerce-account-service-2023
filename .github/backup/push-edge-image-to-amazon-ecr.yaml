@@ -1,0 +1,91 @@
+name: Push an Edge Image to Amazon ECR
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOCKER_REGISTRY: 650504438179.dkr.ecr.ap-northeast-2.amazonaws.com
+  IMAGE_NAME: ${{ github.repository }}:edge
+
+jobs:
+  login-to-amazon-ecr:
+    name: Login to Amazon ECR Private
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::650504438179:role/GitHubOIDCAssumingRole
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+    outputs:
+      username: ${{ steps.login-ecr.outputs.docker_username_650504438179_dkr_ecr_ap_northeast_2_amazonaws_com }}
+      password: ${{ steps.login-ecr.outputs.docker_password_650504438179_dkr_ecr_ap_northeast_2_amazonaws_com }}
+
+  push-edge-image-to-amazon-ecr:
+    name: Push an Edge Image to Amazon ECR
+    needs: login-to-amazon-ecr
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Build and push image to Amazon ECR
+        uses: gradle/gradle-build-action@v2
+        env:
+          IMAGE_NAME: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}
+          DOCKER_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          DOCKER_USERNAME: ${{ needs.login-to-amazon-ecr.outputs.username }}
+          DOCKER_PASSWORD: ${{ needs.login-to-amazon-ecr.outputs.password }}
+        with:
+          arguments: bootBuildImage --publishImage
+
+  sync-oas-to-readme:
+    name: Sync OAS to ReadMe
+    needs: push-edge-image-to-amazon-ecr
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Generate a new OpenAPI specification
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean generateOpenApiDocs
+
+      - uses: readmeio/rdme@8.4.0
+        with:
+          rdme: openapi ./build/openapi.json --key=${{ secrets.README_API_KEY }} --id=${{ secrets.README_API_ID }}

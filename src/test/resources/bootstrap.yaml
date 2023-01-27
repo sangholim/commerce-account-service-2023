@@ -1,0 +1,11 @@
+# Reference: https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/
+
+spring:
+  profiles:
+    active: test
+  application:
+    name: account-service
+
+aws:
+  secretsmanager:
+    enabled: false

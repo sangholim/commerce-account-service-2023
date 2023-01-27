@@ -1,0 +1,28 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaque-token:
+          client-id: unknown
+          client-secret: unknown
+          introspection-uri: unknown
+  mail:
+    host: localhost
+    port: 2525
+    username: test
+    password: test
+
+mongock:
+  enabled: false
+
+keycloak:
+  server-url: unknown
+  realm: unknown
+  client-id: unknown
+  client-secret: unknown
+
+sms:
+  base-url: http://localhost:3535/send
+  sender: xxxx-xxxx
+  userId: testId
+  key: testKey

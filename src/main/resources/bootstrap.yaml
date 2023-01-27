@@ -1,0 +1,23 @@
+# Reference: https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/
+
+spring:
+  application:
+    name: account-service
+
+aws:
+  secretsmanager:
+    prefix: /secret
+    default-context: commerce-api
+    profile-separator: /
+    fail-fast: false
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: 'oas'
+
+aws:
+  secretsmanager:
+    enabled: false

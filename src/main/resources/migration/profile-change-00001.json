@@ -1,0 +1,11 @@
+{
+  "filter": {},
+  "update": [
+    {
+      "$set": {
+        "orderCount": 0
+      }
+    }
+  ]
+}
+

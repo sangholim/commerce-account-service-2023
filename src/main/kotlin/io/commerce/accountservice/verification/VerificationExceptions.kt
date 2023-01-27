@@ -1,0 +1,18 @@
+package io.commerce.accountservice.verification
+
+import io.commerce.accountservice.core.AbstractErrorCodeException
+import io.commerce.accountservice.verification.VerificationConstants.VERIFICATION_DIFFERENT_MESSAGE
+import io.commerce.accountservice.verification.VerificationConstants.VERIFICATION_INVALID_MESSAGE
+import io.commerce.accountservice.verification.VerificationConstants.VERIFICATION_MAX_RETRY_MESSAGE
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
+
+class VerificationSendFailException : ResponseStatusException(HttpStatus.BAD_REQUEST,
+    VerificationConstants.VERIFICATION_SEND_FAIL_MESSAGE
+)
+
+class VerificationFailException : AbstractErrorCodeException(HttpStatus.BAD_REQUEST, VERIFICATION_DIFFERENT_MESSAGE, "verification_failed")
+
+class VerificationInvalidException : AbstractErrorCodeException(HttpStatus.BAD_REQUEST, VERIFICATION_INVALID_MESSAGE, "verification_invalid")
+
+class VerificationExceedLimitException : AbstractErrorCodeException(HttpStatus.BAD_REQUEST, VERIFICATION_MAX_RETRY_MESSAGE, "verification_exceed_limit")

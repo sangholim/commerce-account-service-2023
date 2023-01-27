@@ -1,0 +1,62 @@
+name: Build and test Pull Requests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Build and test
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+  validate-oas:
+    name: Validate OAS
+    needs: [ build-and-test ]
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Generate a new OpenAPI specification
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean generateOpenApiDocs
+
+      - uses: readmeio/rdme@8.4.0
+        with:
+          rdme: validate ./build/openapi.json

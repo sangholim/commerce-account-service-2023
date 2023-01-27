@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - env

@@ -1,0 +1,111 @@
+########################################
+# Default Configuration
+########################################
+
+spring:
+  data:
+    mongodb:
+      database: account-db
+      auto-index-creation: true
+  devtools:
+    livereload:
+      enabled: false
+  jackson:
+    deserialization:
+      read-date-timestamps-as-nanoseconds: false
+    serialization:
+      write-dates-as-timestamps: true
+      write-date-timestamps-as-nanoseconds: false
+    default-property-inclusion: non_null
+  # TODO@장현호: AWS Secrets Manager에서 관리 필요
+  mail:
+    host: email-smtp.ap-northeast-2.amazonaws.com
+    port: 25
+    username: AKIAZO5IWAGR72TGA4WX
+    password: BFGVWW0rWeh8OdikYU9si45JXw+InXP1P1/okEgppBQi
+
+logging:
+  charset:
+    console: utf-8
+    file: utf-8
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: never
+  forward-headers-strategy: native
+
+management:
+  endpoint.health.probes.enabled: true
+
+springdoc:
+  swagger-ui.enabled: false
+  api-docs.enabled: false
+  packages-to-scan: io.commerce.accountservice
+
+# TODO@장현호: AWS Secrets Manager에서 관리 필요
+sms:
+  base-url: https://apis.aligo.in/send/
+  sender: 1666-7472
+  userId: commerce
+  key: oeyxjxtdmtjdrucnt5bgpoboh54b6gmz
+
+mongock:
+  enabled: true
+
+---
+
+########################################
+# Spring Cloud Stream Configuration
+########################################
+
+spring:
+  config:
+    activate:
+      on-profile: "!oas"
+  cloud:
+    stream:
+      output-bindings: customer-registered
+      bindings:
+        customer-registered-out-0:
+          destination: customer-registered
+          group: ${spring.application.name}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "dev | prod"
+  cloud:
+    stream:
+      kafka:
+        binder:
+          configuration:
+            security.protocol: SASL_SSL
+            sasl.mechanism: AWS_MSK_IAM
+            sasl.jaas.config: software.amazon.msk.auth.iam.IAMLoginModule required;
+            sasl.client.callback.handler.class: software.amazon.msk.auth.iam.IAMClientCallbackHandler
+
+---
+
+########################################
+# Log Level Configuration
+########################################
+
+spring:
+  config:
+    activate:
+      on-profile: "!prod"
+
+server:
+  error:
+    include-stacktrace: always
+
+logging:
+  level:
+    web: debug
+    io.commerce.accountservice: debug
+    org.springframework.data.mongodb: debug
+    org.springframework.cloud.stream: debug
