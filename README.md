@@ -1,5 +1,12 @@
 # Account Service
 - MSA 기반 회원 계정 서비스
+- 개발 언어: Kotlin
+- 통합 프레임워크: Spring Boot2
+  - Spring Security Reactive
+  - Spring Webflux
+  - Spring Data Mongo Reactive
+- Kotlin 의 Coroutine 도입 함으로서, 동시성 처리 지원
+- 데이터 베이스: Mongodb
 ## API 명세
 ## 이벤트
 - 회원 가입 이후 이벤트 발생
