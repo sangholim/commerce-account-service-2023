@@ -8,17 +8,8 @@
 - Kotlin 의 Coroutine 도입 함으로서, 동시성 처리 지원
 - 데이터 베이스: Mongodb
 ## API 명세
----
-title: Account API v1.0.0-edge
-language_tabs:
-  - http: HTTP
-toc_footers: []
-includes: []
-search: true
-highlight_theme: darkula
-headingLevel: 0
-
----
+<details>
+  <summary>API 보기</summary>
 
 <!-- Generator: Widdershins v4.0.1 -->
 
@@ -2271,7 +2262,6 @@ Pagination Response View
     }
   ]
 }
-
 ```
 
 ### Properties
@@ -2287,7 +2277,7 @@ Pagination Response View
 |agreement|[AgreementView](#schemaagreementview)|true|none|none|
 |identityProviders|[string]|false|none|소셜 미디어 리스트|
 |shippingAddresses|[[ShippingAddressView](#schemashippingaddressview)]|false|none|배송지 리스트|
-
+</details>
 
 ## 이벤트
 - 회원 가입 이후 이벤트 발생
