@@ -16,7 +16,7 @@ aws:
 spring:
   config:
     activate:
-      on-profile: 'oas'
+      on-profile: "oas | local | dev"
 
 aws:
   secretsmanager:
