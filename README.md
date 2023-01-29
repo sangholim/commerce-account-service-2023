@@ -2285,6 +2285,6 @@ Pagination Response View
 
   - 회원 서비스 -> 회원 혜택 서비스
 ## 마이크로 서비스 구조
-![마이크로 서비스 drawio](https://user-images.githubusercontent.com/55565835/215039176-47faceaf-50e9-4c4a-9612-48b8caf399a6.png)
+![image](https://user-images.githubusercontent.com/55565835/215302711-9f1c370c-ff1c-4026-a556-fd8153c1b1e8.png)
 ---
 
