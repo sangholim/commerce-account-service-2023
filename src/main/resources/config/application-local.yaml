@@ -2,7 +2,13 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017
-
+  security:
+    oauth2:
+      resourceserver:
+        opaque-token:
+          client-id: unknown
+          client-secret: unknown
+          introspection-uri: unknown
 management:
   endpoints:
     web:
@@ -10,3 +16,9 @@ management:
         include:
           - health
           - env
+
+keycloak:
+  server-url: unknown
+  realm: unknown
+  client-id: unknown
+  client-secret: unknown
