@@ -1,5 +1,4 @@
 # Account Service
-- MSA 기반 회원 계정 서비스
 - 개발 언어: Kotlin
 - 통합 프레임워크: Spring Boot2
   - Spring Security Reactive
