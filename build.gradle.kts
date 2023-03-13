@@ -33,7 +33,7 @@ dependencies {
     implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:2.4.2"))
     implementation(platform("io.kotest:kotest-bom:5.5.4"))
     implementation(platform("io.mongock:mongock-bom:5.2.2"))
-    implementation(platform("org.springdoc:springdoc-openapi:1.6.13"))
+    implementation(platform("org.springdoc:springdoc-openapi:2.0.3"))
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
     implementation(platform("org.testcontainers:testcontainers-bom:1.17.6"))
 
