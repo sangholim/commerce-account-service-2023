@@ -57,6 +57,6 @@ jobs:
         with:
           arguments: clean generateOpenApiDocs
 
-      - uses: readmeio/rdme@8.4.0
+      - uses: readmeio/rdme@8.6.0
         with:
           rdme: validate ./build/openapi.json
